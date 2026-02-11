@@ -257,6 +257,9 @@ function App() {
                 ▼ 部品サマリを表示
               </button>
             )}
+            <div className="checklist-header">
+              <h2>✅ チェックリスト</h2>
+            </div>
             <div className="checklist-scroll-area">
               <ChecklistTable
                 checkItems={checkItems}
