@@ -1098,3 +1098,7 @@ body {
   border: 1px solid var(--accent-green);
   color: var(--accent-green);
 }
+
+.hidden {
+  display: none !important;
+}

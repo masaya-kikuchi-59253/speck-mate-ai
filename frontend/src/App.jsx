@@ -228,21 +228,19 @@ function App() {
         {/* Right pane */}
         <div className="right-pane" style={{ width: `${100 - leftWidth}%` }} ref={rightPaneRef}>
           {/* Right top - Component Summary */}
-          {!summaryCollapsed && (
-            <>
-              <div className="right-top-pane" style={{ height: `${summaryHeight}%` }}>
-                <ComponentSummary
-                  summary={componentSummary}
-                  onCollapse={() => setSummaryCollapsed(true)}
-                />
-              </div>
-              {/* Vertical splitter */}
-              <div
-                className="splitter-v"
-                onMouseDown={handleVSplitterMouseDown}
-              />
-            </>
-          )}
+          <div className={`right-top-pane ${summaryCollapsed ? 'hidden' : ''}`} style={{
+            height: `${summaryHeight}%`
+          }}>
+            <ComponentSummary
+              summary={componentSummary}
+              onCollapse={() => setSummaryCollapsed(true)}
+            />
+          </div>
+          {/* Vertical splitter */}
+          <div
+            className={`splitter-v ${summaryCollapsed ? 'hidden' : ''}`}
+            onMouseDown={handleVSplitterMouseDown}
+          />
 
           {/* Right bottom - Checklist */}
           <div className="right-bottom-pane" style={{
