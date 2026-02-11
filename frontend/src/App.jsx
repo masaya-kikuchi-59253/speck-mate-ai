@@ -29,16 +29,18 @@ function App() {
     return items;
   }, []);
 
-  // Upload file
+  // Upload file (Mock)
   const handleFileUpload = useCallback(async (file) => {
     setSpecFile(file);
-    const formData = new FormData();
-    formData.append('file', file);
 
-    const res = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData });
+    // Mock upload - just trigger endpoint to get metadata
+    const res = await fetch(`${API_BASE}/upload`, { method: 'POST' });
     const data = await res.json();
 
-    setSpecUrl(`http://localhost:3001${data.url}`);
+    // Create local preview URL
+    const localUrl = URL.createObjectURL(file);
+    setSpecUrl(localUrl);
+
     setComponentSummary(data.componentSummary);
 
     // Fetch check items and run analysis

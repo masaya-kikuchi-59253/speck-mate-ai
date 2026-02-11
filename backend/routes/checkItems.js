@@ -1,54 +1,38 @@
 const express = require('express');
-const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+// const fs = require('fs'); // Not used in mock mode
+// const multer = require('multer'); // Not used in mock mode
 const router = express.Router();
 
 const checkItems = require('../data/mockCheckItems.json');
-
-// Multer setup for file upload
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadDir = path.join(__dirname, '..', 'uploads');
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        // Preserve original filename
-        cb(null, Date.now() + '-' + Buffer.from(file.originalname, 'latin1').toString('utf8'));
-    }
-});
-const upload = multer({ storage });
 
 // GET /api/check-items
 router.get('/check-items', (req, res) => {
     res.json(checkItems);
 });
 
-// POST /api/upload - Upload specification document
-router.post('/upload', upload.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-    }
-    res.json({
-        filename: req.file.filename,
-        originalname: Buffer.from(req.file.originalname, 'latin1').toString('utf8'),
-        url: `/uploads/${req.file.filename}`,
-        // Mock component summary
-        componentSummary: {
-            partName: 'セラミックコンデンサ',
-            partNumber: 'GRM188R71C104KA01D',
-            manufacturer: '村田製作所',
-            category: 'コンデンサ',
-            package: '0603 (1608 metric)',
-            capacitance: '100nF',
-            ratedVoltage: '16V',
-            temperatureCharacteristic: 'X7R',
-            status: '量産中',
-        }
-    });
+// POST /api/upload - Mock upload (returns fixed component summary)
+router.post('/upload', (req, res) => {
+    // Simulate upload delay
+    setTimeout(() => {
+        res.json({
+            filename: 'mock_spec.pdf',
+            originalname: 'mock_spec.pdf',
+            url: '', // Frontend should use local blob URL
+            // Mock component summary
+            componentSummary: {
+                partName: 'セラミックコンデンサ',
+                partNumber: 'GRM188R71C104KA01D',
+                manufacturer: '村田製作所',
+                category: 'コンデンサ',
+                package: '0603 (1608 metric)',
+                capacitance: '100nF',
+                ratedVoltage: '16V',
+                temperatureCharacteristic: 'X7R',
+                status: '量産中',
+            }
+        });
+    }, 1200); // 1.2s delay for "uploading" effect
 });
 
 // POST /api/analyze - Mock AI analysis
