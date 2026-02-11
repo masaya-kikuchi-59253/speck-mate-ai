@@ -15,7 +15,7 @@ function App() {
   const [checkResults, setCheckResults] = useState({});
   const [summaryCollapsed, setSummaryCollapsed] = useState(false);
   const [summaryHeight, setSummaryHeight] = useState(25); // percentage
-  const [leftWidth, setLeftWidth] = useState(40); // percentage
+  const [leftWidth, setLeftWidth] = useState(50); // percentage
   const [analyzing, setAnalyzing] = useState(false);
 
   const mainRef = useRef(null);

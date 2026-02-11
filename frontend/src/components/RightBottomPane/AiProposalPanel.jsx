@@ -114,46 +114,49 @@ function AiProposalPanel({ item, result, onUpdate }) {
 
             {/* Manual input */}
             <div className="manual-input-section">
-                <label className="manual-toggle">
-                    <input
-                        type="checkbox"
-                        checked={showManual}
-                        onChange={(e) => handleManualToggle(e.target.checked)}
-                    />
-                    手動で入力する
-                </label>
+                <div
+                    className={`manual-input-header ${showManual ? 'active' : ''}`}
+                    onClick={() => handleManualToggle(!showManual)}
+                >
+                    <div className="manual-toggle-label">
+                        <span>手動で入力する</span>
+                    </div>
+                    <div className="toggle-switch">
+                        <div className="toggle-knob"></div>
+                    </div>
+                </div>
 
                 {showManual && (
                     <div className="manual-fields">
                         <div className="manual-field">
                             <label>最終判定</label>
-                            <select
-                                value={result.finalJudgment}
-                                onChange={(e) => handleManualJudgment(e.target.value)}
-                            >
-                                <option value="ok">○ 適合</option>
-                                <option value="ng">× 不適合</option>
-                            </select>
+                            <div className="judgment-buttons">
+                                <button
+                                    className={`judgment-btn ok ${result.finalJudgment === 'ok' ? 'active' : ''}`}
+                                    onClick={() => handleManualJudgment('ok')}
+                                >
+                                    ○ 適合
+                                </button>
+                                <button
+                                    className={`judgment-btn ng ${result.finalJudgment === 'ng' ? 'active' : ''}`}
+                                    onClick={() => handleManualJudgment('ng')}
+                                >
+                                    × 不適合
+                                </button>
+                            </div>
                         </div>
 
                         <div className="manual-field">
                             <label>該当ページ</label>
-                            <input
-                                type="text"
-                                placeholder="例: 3"
+                            <select
                                 value={result.manualPage || ''}
                                 onChange={(e) => handleManualPage(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="manual-field full-width">
-                            <label>抜粋</label>
-                            <textarea
-                                rows={2}
-                                placeholder="仕様書からの抜粋を入力..."
-                                value={result.manualExcerpt || ''}
-                                onChange={(e) => handleManualExcerpt(e.target.value)}
-                            />
+                            >
+                                <option value="">選択してください</option>
+                                {[1, 2, 3, 4, 5, 6].map(num => (
+                                    <option key={num} value={num}>{num}</option>
+                                ))}
+                            </select>
                         </div>
                     </div>
                 )}
