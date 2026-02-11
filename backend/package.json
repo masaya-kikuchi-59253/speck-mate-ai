@@ -1,0 +1,16 @@
+{
+  "name": "specmate-ai-backend",
+  "version": "1.0.0",
+  "description": "SpecMate AI - Backend API Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.0",
+    "multer": "^1.4.5-lts.1"
+  }
+}
