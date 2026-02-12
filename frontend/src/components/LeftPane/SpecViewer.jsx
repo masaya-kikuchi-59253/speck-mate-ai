@@ -33,10 +33,11 @@ function SpecViewer({ specUrl, onFileUpload, analyzing }) {
 
             {specUrl ? (
                 <div className="spec-viewer-content" style={{ position: 'relative' }}>
-                    <embed
+                    <iframe
                         src={`${specUrl}#view=FitH`}
                         type="application/pdf"
-                        style={{ width: '100%', height: '100%' }}
+                        style={{ width: '100%', height: '100%', border: 'none' }}
+                        title="PDF Viewer"
                     />
                     {analyzing && (
                         <div className="analyzing-overlay">

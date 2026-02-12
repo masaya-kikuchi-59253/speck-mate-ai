@@ -33,31 +33,41 @@ function App() {
   const handleFileUpload = useCallback(async (file) => {
     setSpecFile(file);
 
-    // Create FormData and upload file to backend
-    const formData = new FormData();
-    formData.append('file', file);
+    try {
+      // Create FormData and upload file to backend
+      const formData = new FormData();
+      formData.append('file', file);
 
-    const res = await fetch(`${API_BASE}/upload`, {
-      method: 'POST',
-      body: formData,
-    });
-    const data = await res.json();
+      console.log('Uploading file:', file.name);
 
-    // Use the URL returned from backend (for server-side PDF serving)
-    // Falls back to blob URL if server doesn't provide one
-    const fileUrl = data.url || URL.createObjectURL(file);
-    setSpecUrl(fileUrl);
+      const res = await fetch(`${API_BASE}/upload`, {
+        method: 'POST',
+        body: formData,
+      });
 
-    setComponentSummary(data.componentSummary);
+      if (!res.ok) {
+        throw new Error(`Upload failed: ${res.statusText}`);
+      }
 
-    // Fetch check items and run analysis
-    const items = await fetchCheckItems();
-    setAnalyzing(true);
+      const data = await res.json();
+      console.log('Upload response:', data);
 
-    // Analyze each item (mock AI)
-    const results = {};
-    for (const item of items) {
-      try {
+      // Use the URL returned from backend (for server-side PDF serving)
+      // Falls back to blob URL if server doesn't provide one
+      const fileUrl = data.url || URL.createObjectURL(file);
+      console.log('PDF URL:', fileUrl);
+      setSpecUrl(fileUrl);
+
+      setComponentSummary(data.componentSummary);
+
+      // Fetch check items and run analysis
+      const items = await fetchCheckItems();
+      setAnalyzing(true);
+
+      // Analyze each item (mock AI)
+      const results = {};
+      for (const item of items) {
+        try {
         const analyzeRes = await fetch(`${API_BASE}/analyze`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -96,6 +106,11 @@ function App() {
     }
     setCheckResults(results);
     setAnalyzing(false);
+  } catch (error) {
+    console.error('File upload error:', error);
+    alert(`ファイルのアップロードに失敗しました: ${error.message}`);
+    setAnalyzing(false);
+  }
   }, [fetchCheckItems]);
 
   // Update check result

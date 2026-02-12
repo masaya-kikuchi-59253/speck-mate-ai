@@ -7,11 +7,22 @@ const exportRouter = require('./routes/export');
 const app = express();
 const PORT = 3001;
 
-app.use(cors());
+// CORS configuration
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 
-// Uploaded files static serving
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Uploaded files static serving with proper headers
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.pdf')) {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'inline');
+    }
+  }
+}));
 
 // API routes
 app.use('/api', checkItemsRouter);
