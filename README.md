@@ -53,5 +53,9 @@ start.bat
 
 ※ファイアウォールでポート 5173 (Frontend) と 3001 (Backend) の通信を許可してください。
 
+## ライセンス
+
+本プロジェクトは [MIT License](LICENSE) の下で公開されています。
+
 ---
 © 2026 SpecMate AI Team
